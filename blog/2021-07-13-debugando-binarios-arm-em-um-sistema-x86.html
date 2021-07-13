@@ -1,66 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-	<meta charset="UTF-8">
-	<title>marciomaiajr.xyz</title>
-	<link rel="stylesheet" type="text/css" href="../style.css">
+<meta charset="UTF-8">
+<title>marciomaiajr.xyz</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
 </head>
 <body>
-	<h1>Debugando binários arm em um sistema x86</h1>
-	<h2>Introdução</h2>
-	<p>Estou acompanhando alguns tutoriais e livros sobre linguagem assembly
-	para processadores arm e me deparei com o seguinte problema: como depurar
-	os binários em uma máquina x86?</p>
-	<p>Felizmente, graças ao qemu e às ferramentas gnu podemos facilmente
-	resolver este problema sem precisar de uma máquina arm.</p>
-	<h2>Descrição do processo</h2>
-
-	<p>Para debugar binários <em>arm</em> em uma máquina de arquitetura
-	<em>x86_64</em>, é necessário instalar o gdb (<em>GNU Debugger</em>)
-	específico para a arquitetura alvo. No caso do <em>Arch</em>, o pacote
-	é o <em>arm-none-eabi-gdb</em>.</p>
-
-	<pre>$ sudo pacman -S arm-none-eabi-gdb</pre>
-	<p> Também é necessário instalar o qemu user space emulator que contém
-	o emulador para a arquitetura arm. No caso do Arch eu instalei os
-	pacotes qemu e qemu-arch-extra.</p>
-
-	<pre>$ sudo pacman -S qemu qemu-arch-extra</pre>
-
-	<p>Após isso, é só compilar e linkar o arquivo assembly utilizando o
-	seu cross assembler/linker para arm.</p>
-
-	<pre>$ arm-none-eabi-as -g file.asm -o file.o</pre>
-	<pre>$ arm-none-eabi-ld file.o -o file</pre>
-
-	<p>Finalmente podemos rodar o binário com o comando abaixo:</p>
-
-	<pre>$ qemu-arm -L /usr/arm-none-eabi -g 1234 ./file</pre>
-
-	<p>Este comando vai dar início ao programa e abrir a porta 1234 para o
-	debug remoto.</p>
-
-	<p>Agora só falta configurar o gdb para se comunicar com o processo
-	remoto e iniciar o processo de depuração.</p>
-
-	<pre>$ arm-none-eabi-gdb -q --nh</pre>
-
-	<p>Depois de entrar no gdb executar:</p>
-
-	<pre>set architecture arm</pre>
-	<pre>file ./file</pre>
-	<pre>target remote localhost:1234</pre>
-
-	<p>E pronto. O binário estará pronto para ser debugado.</p>
-
-
-	<h2>Referências</h2>
-	<ul>
-		<li><a href="https://azeria-labs.com/arm-on-x86-qemu-user/">https://azeria-labs.com/arm-on-x86-qemu-user/</a></li>
-		<li><a href="http://www.davespace.co.uk/arm/">http://www.davespace.co.uk/arm/</a></li>
-		<li><a href="https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf">https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf</a></li>
-		<li><a href="https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options">https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options</a></li>
-	</ul>
-	<a href="../index.html">Voltar a página inicial.</a>
+<h1 id="debugando-binários-arm-em-um-sistema-x86_64">Debugando binários arm em um sistema x86_64</h1>
+<h2 id="introdução">Introdução</h2>
+<p>Estou acompanhando alguns tutoriais e livros sobre linguagem <em>assembly</em> para processadores <em>arm</em> e me deparei com o seguinte problema: <strong>como depurar os binários em uma máquina x86?</strong></p>
+<p>Felizmente, graças ao <em>qemu</em> e às ferramentas GNU podemos facilmente resolver este problema sem precisar utilizar uma máquina real com processador <em>arm</em>.</p>
+<h2 id="descrição-do-processo">Descrição do processo</h2>
+<p>Para debugar binários <em>arm</em> em uma máquina de arquitetura <em>x86_64</em>, é necessário instalar o <strong>gdb</strong> (<em>GNU Debugger</em>) específico para a arquitetura alvo (<em>no nosso caso, a arquitetura arm</em>). No caso do <em>Arch</em>, o pacote em questão é o <strong>arm-none-eabi-gdb</strong>.</p>
+<pre><code>$ sudo pacman -S arm-none-eabi-gdb</code></pre>
+<p>Também é necessário instalar o <strong>qemu</strong> <em>user space emulator</em>, que contém o emulador para a arquitetura <em>arm</em>. Para o Arch, eu instalei os pacotes <strong>qemu</strong> e <strong>qemu-arch-extra</strong>.</p>
+<pre><code>$ sudo pacman -S qemu qemu-arch-extra</code></pre>
+<p>Após isso, é só <em>compilar</em> e <em>linkar</em> o arquivo <em>assembly</em> utilizando o seu <em>cross assembler/compiler</em> para <em>arm</em>. No meu caso estou utilizando o <strong>arm-none-eabi-as</strong> e <strong>arm-none-eabi-ld</strong>, respectivamente.</p>
+<pre><code>$ arm-none-eabi-as -g file.s -o file.o
+$ arm-none-eabi-ld file.o -o file</code></pre>
+<p>Finalmente podemos executar o binário utilizando o <strong>qemu</strong> com o comando abaixo:</p>
+<pre><code>$ qemu-arm -g 1234 ./file</code></pre>
+<p>A opção <code>-g</code> abre uma conexão TCP a partir da porta 1234 para o debug remoto.</p>
+<p>Agora só falta configurar o <strong>gdb</strong> para se comunicar com o processo remoto e iniciar a depuração.</p>
+<pre><code>$ arm-none-eabi-gdb -q -nh</code></pre>
+<p>Depois que estiver dentro do <strong>gdb</strong> executar os seguintes comandos:</p>
+<pre><code>set architecture arm
+file ./file
+target remote localhost:1234</code></pre>
+<p>E pronto. Você está pronto para depurar um binário <em>arm</em> utilizando uma máquina x86_64.</p>
+<h2 id="referências">Referências</h2>
+<ul>
+<li><a href="https://azeria-labs.com/arm-on-x86-qemu-user/">https://azeria-labs.com/arm-on-x86-qemu-user/</a></li>
+<li><a href="http://www.davespace.co.uk/arm/&quot;">http://www.davespace.co.uk/arm/"</a></li>
+<li><a href="https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf">https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf</a></li>
+<li><a href="https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options">https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options</a></li>
+</ul>
+<a href="../index.html">Voltar à página inicial</a>
 </body>
 </html>
