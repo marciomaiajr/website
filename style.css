@@ -1,0 +1,40 @@
+html {
+	font-family: sans-serif;
+	background: #232323;
+	color: #dedede;
+}
+
+a {
+	color: #2289de;
+}
+
+a:hover {
+	color: #de2222;
+}
+
+a:visited {
+	color: #2289de;
+}
+
+body {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: none;
+}
+
+h1 {
+	color: lightblue;
+}
+
+h1 small {
+	color: tomato;
+}
+
+h2 {
+	color: goldenrod;
+}
+
+h3 {
+	color: tomato;
+}
