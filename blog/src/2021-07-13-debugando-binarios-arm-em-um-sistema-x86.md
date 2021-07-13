@@ -64,7 +64,7 @@ x86_64.
 
 ## Referências
 
-- https://azeria-labs.com/arm-on-x86-qemu-user/
-- http://www.davespace.co.uk/arm/"
+- https://azeria-labs.com/arm-on-x86-qemu-user
+- http://www.davespace.co.uk/arm
 - https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf
 - https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options
