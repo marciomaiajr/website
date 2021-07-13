@@ -7,6 +7,13 @@
 </head>
 <body>
 	<h1>Debugando binários arm em um sistema x86</h1>
+	<h2>Introdução</h2>
+	<p>Estou acompanhando alguns tutoriais e livros sobre linguagem assembly
+	para processadores arm e me deparei com o seguinte problema: como depurar
+	os binários em uma máquina x86?</p>
+	<p>Felizmente, graças ao qemu e às ferramentas gnu podemos facilmente
+	resolver este problema sem precisar de uma máquina arm.</p>
+	<h2>Descrição do processo</h2>
 
 	<p>Para debugar binários <em>arm</em> em uma máquina de arquitetura
 	<em>x86_64</em>, é necessário instalar o gdb (<em>GNU Debugger</em>)
