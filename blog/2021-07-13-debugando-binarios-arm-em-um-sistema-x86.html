@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>marciomaiajr.xyz</title>
+	<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+	<h1>Debugando binários arm em um sistema x86</h1>
+
+	<p>Para debugar binários <em>arm</em> em uma máquina de arquitetura
+	<em>x86_64</em>, é necessário instalar o gdb (<em>GNU Debugger</em>)
+	específico para a arquitetura alvo. No caso do <em>Arch</em>, o pacote
+	é o <em>arm-none-eabi-gdb</em>.</p>
+
+	<pre>$ sudo pacman -S arm-none-eabi-gdb</pre>
+	<p> Também é necessário instalar o qemu user space emulator que contém
+	o emulador para a arquitetura arm. No caso do Arch eu instalei os
+	pacotes qemu e qemu-arch-extra.</p>
+
+	<pre>$ sudo pacman -S qemu qemu-arch-extra</pre>
+
+	<p>Após isso, é só compilar e linkar o arquivo assembly utilizando o
+	seu cross assembler/linker para arm.</p>
+
+	<pre>$ arm-none-eabi-as -g file.asm -o file.o</pre>
+	<pre>$ arm-none-eabi-ld file.o -o file</pre>
+
+	<p>Finalmente podemos rodar o binário com o comando abaixo:</p>
+
+	<pre>$ qemu-arm -L /usr/arm-none-eabi -g 1234 ./file</pre>
+
+	<p>Este comando vai dar início ao programa e abrir a porta 1234 para o
+	debug remoto.</p>
+
+	<p>Agora só falta configurar o gdb para se comunicar com o processo
+	remoto e iniciar o processo de depuração.</p>
+
+	<pre>$ arm-none-eabi-gdb -q --nh</pre>
+
+	<p>Depois de entrar no gdb executar:</p>
+
+	<pre>set architecture arm</pre>
+	<pre>file ./file</pre>
+	<pre>target remote localhost:1234</pre>
+
+	<p>E pronto. O binário estará pronto para ser debugado.</p>
+
+
+	<h2>Referências</h2>
+	<ul>
+		<li><a href="https://azeria-labs.com/arm-on-x86-qemu-user/">https://azeria-labs.com/arm-on-x86-qemu-user/</a></li>
+		<li><a href="http://www.davespace.co.uk/arm/">http://www.davespace.co.uk/arm/</a></li>
+		<li><a href="https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf">https://www.ic.unicamp.br/~celio/mc404-2014/docs/gnu-arm-directives.pdf</a></li>
+		<li><a href="https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options">https://qemu-project.gitlab.io/qemu/user/main.html#command-line-options</a></li>
+	</ul>
+	<a href="../index.html">Voltar a página inicial.</a>
+</body>
+</html>
