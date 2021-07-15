@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>marciomaiajr.xyz</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<h1 id="configurando-o-sdk-do-raspberry-pi-pico-no-linux">Configurando o SDK do Raspberry Pi Pico no Linux</h1>
+<p>Recentemente adquiri o novo <em>Raspberry Pi Pico</em> (comprei na loja <em>FilipeFlop</em>). Esta placa é baseada no <em>microcontrolador RB2040</em>, projetado pela <em>Raspberry Pi</em> no Reino Unido. A placa é bem pequena, medindo aproximadamente 5cm x 2cm.</p>
+<p>Também comprei uma barra de pinos, já que o <em>Pico</em> não vem com os conectores soldados. Tive que tomar coragem, tirar o ferro de solda do guarda roupa e realizar a solda. Felizmente tudo correu bem e, em menos de 5 minutos o <em>Pico</em> já estava com os conectores soldados.</p>
+<p>O <em>Raspberry Pi Pico</em> foi lançado com uma uma excelente documentação disponível em <a href="raspberrypi.org/documentation/rp2040/getting-started">raspberrypi.org</a>. Lá é possível encontrar tudo o que você precisa para configurar o ambiente de desenvolvimento para o <em>Pico</em>.</p>
+<h2 id="configuração-do-sdk">Configuração do SDK</h2>
+<p>Primeiramente, crie um diretório em seu sistema para abrigar os repositórios do SDK. Pode-se criá-los em qualquer lugar do sistema. Eu coloquei em <code>~/.local/share</code>.</p>
+<pre><code>$ mkdir pico-sdk pico-examples pico-extras pico-playground</code></pre>
+<p>Depois entre em cada uma destas pastas e <em>clone</em> os repositórios. Não é necessário <em>clonar</em> todos os repositórios. Se preferir, <em>clone</em> apenas o <strong>pico-sdk</strong>. Note que estou executando o comando <code>git submodule update --init</code> para que, caso existam <em>subcomponentes</em> nos repositórios, estes também sejam baixados.</p>
+<pre><code>$ cd pico-sdk
+$ git clone https://github.com/raspberrypi/pico-sdk
+$ git submodule update --init
+$ cd ..
+$ cd pico-examples
+$ git clone https://github.com/raspberrypi/pico-examples
+$ git submodule update --init
+$ cd ..
+$ cd pico-extras
+$ git clone https://github.com/raspberrypi/pico-extras
+$ git submodule update --init
+$ cd ..
+$ cd pico-playground
+$ git submodule update --init
+$ git clone https://github.com/raspberrypi/pico-playground</code></pre>
+<p>Depois instale os componentes para o <em>build system</em> e <em>cross compiler</em>. No <em>Arch</em> os pacotes são <strong>cmake</strong>, <strong>arm-none-eabi-gcc</strong> e <strong>arm-none-eabi-newlib</strong>.</p>
+<pre><code>$ sudo pacman -S cmake arm-none-eabi-gcc arm-none-eabi-newlib</code></pre>
+<p>Agora é hora de configurar as variáveis de ambiente. Isso é muito simples, bastando inserir no arquivo <code>.bashrc</code> os caminhos dos diretórios onde estão os repositórios.</p>
+<pre><code>export PICO_SDK_PATH=&quot;$HOME/.local/share/pico-sdk&quot;
+export PICO_EXAMPLES_PATH=&quot;$HOME/.local/share/pico-examples&quot;
+export PICO_EXTRAS_PATH=&quot;$HOME/.local/share/pico-extras&quot;
+export PICO_PLAYGROUND_PATH=&quot;$HOME/.local/share/pico-playground&quot;</code></pre>
+<h2 id="compilando-os-exemplos">Compilando os exemplos</h2>
+<p>Agora que a <em>SDK</em> do <em>Pico</em> está configurada, basta compilar os exemplos em <code>pico-examples</code> e testar a placa. Para isso, entre dentro da pasta e crie um subdiretórios <code>build</code>.</p>
+<pre><code>$ cd pico-examples
+$ mkdir build</code></pre>
+<p>Dentro do diretório <code>build</code> execute o comando <code>cmake ..</code></p>
+<pre><code>$ cd build
+$ cmake ..</code></pre>
+<p>Isso vai gerar os arquivos de configuração para a compilação do projeto. Você pode agora direto do diretório <code>build</code>, executar o comando <strong>make</strong>. Isso vai compilar todos os projetos. Também é possível compilar apenas os projetos que você quer testar, bastando para isso executar o <strong>make</strong> dentro do diretório do programa. No exemplo abaixo, vamos compilar o <em>blink</em> e o <em>hello_world</em>:</p>
+<pre><code>$ cd blink
+$ make
+$ cd ..
+$ cd hello_world
+$ make
+$ cd ..</code></pre>
+<h2 id="testando-os-exemplos">Testando os exemplos</h2>
+<p>Para testar os exemplos, basta copiar o arquivo de extensão <code>.uf2</code> para o <em>Raspberry Pi Pico</em>. Para fazer isso, conecte a placa via <em>USB</em> no seu computador com o botão pressionado (o botão que há na parte superior do <em>Pico</em> próximo ao conector <em>micro USB</em> deste). Ao fazer isso o <em>Pico</em> será montado no seu sistema de arquivos. No exemplo abaixo, vou copiar o projeto <em>blink</em> para o <em>Pico</em>.</p>
+<pre><code>$ cp pico-examples/build/blink.uf2 /mnt/pico</code></pre>
+<p>Após a cópia, o <em>Pico</em> será desmontado quase que imediatamente, e logo em seguida seu programa vai começar a executar. Isso vai fazer com que o pequeno <em>LED</em> na placa pisque em intervalos constantes. Parabéns, você conseguiu fazer o upload do seu primeiro programa.</p>
+<p>Podemos agora testar o programa <em>hello_world</em> que se conecta com o computador pela interface <em>USB</em> e manda a mensagem <em>Hello, world</em> através da <em>tty</em>. Para isso, basta copiar o arquivo <em>hello_world.uf2</em> para o <em>Pico</em>.</p>
+<pre><code>$ cp pico-examples/build/hello_world/usb/hello_usb.uf2 /mnt/pico</code></pre>
+<p>Após isso, basta se conectar via <em>tty</em> utilizando um programa como o <em>GNU screen</em> e ver as mensagens na saída padrão.</p>
+<pre><code>$ sudo screen /dev/ttyACM0</code></pre>
+<p>Pronto! Se você conseguiu rodar estes exemplos está pronto para iniciar no desenvolvimento para o <em>Raspberry Pi Pico</em>.</p>
+<h2 id="referências">Referências</h2>
+<ul>
+<li><a href="https://raspberrypi.org/documentation/rp2040/getting-started/">https://raspberrypi.org/documentation/rp2040/getting-started/</a></li>
+</ul>
+<a href="../index.html">Voltar à página inicial</a>
+</body>
+</html>
