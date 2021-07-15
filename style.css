@@ -21,6 +21,7 @@ body {
 
 h1 {
 	color: lightblue;
+	text-align: center;
 }
 
 h1 small {
@@ -29,9 +30,37 @@ h1 small {
 
 h2 {
 	color: goldenrod;
+	text-align: center;
 }
 
 h3 {
 	color: tomato;
+	text-align: center;
 }
+
+.mainpage {
+	text-align: left;
+}
+
+code {
+	color: lime;
+	border-radius: 5px;
+}
+
+pre {
+	background: #111222;
+	border: 1px solid lime;
+	border-radius: 10px;
+	padding: 1em;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	max-width: 640px;
+	margin:auto;
+}
+
+img {
+	max-width: 90%;
+	margin: auto;
+	display: block;
+	border: solid 2px beige;
 }

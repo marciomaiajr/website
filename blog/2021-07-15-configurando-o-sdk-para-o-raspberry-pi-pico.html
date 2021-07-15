@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1 id="configurando-o-sdk-do-raspberry-pi-pico-no-linux">Configurando o SDK do Raspberry Pi Pico no Linux</h1>
-<p><img style="float: left; margin-right: 10px; margin-bottom: 10px;" src="../images/20210715-rpi-pico.jpg" alt="raspberry pi pico" /></p>
+<p><img src="../images/20210715-rpi-pico.jpg" alt="raspberry pi pico" /></p>
 <p>Recentemente adquiri o novo <em>Raspberry Pi Pico</em> (comprei na loja <em>FilipeFlop</em>). Esta placa é baseada no <em>microcontrolador RB2040</em>, projetado pela <em>Raspberry Pi</em> no Reino Unido. A placa é bem pequena, medindo aproximadamente 5cm x 2cm.</p>
 <p>Também comprei uma barra de pinos, já que o <em>Pico</em> não vem com os conectores soldados. Tive que tomar coragem, tirar o ferro de solda do guarda roupa e realizar a solda. Felizmente tudo correu bem e, em menos de 5 minutos o <em>Pico</em> já estava com os conectores soldados.</p>
 <p>O <em>Raspberry Pi Pico</em> foi lançado com uma uma excelente documentação disponível em <a href="raspberrypi.org/documentation/rp2040/getting-started">raspberrypi.org</a>. Lá é possível encontrar tudo o que você precisa para configurar o ambiente de desenvolvimento para o <em>Pico</em>.</p>
@@ -52,7 +52,7 @@ $ cd hello_world
 $ make
 $ cd ..</code></pre>
 <h2 id="testando-os-exemplos">Testando os exemplos</h2>
-<p><img style="float: right; margin-left: 10px; margin-bottom: 10px;" src="../images/20210715-hello-world.jpg" alt="hello world" /></p>
+<p><img src="../images/20210715-hello-world.jpg" alt="hello world" /></p>
 <p>Para testar os exemplos, basta copiar o arquivo de extensão <code>.uf2</code> para o <em>Raspberry Pi Pico</em>. Para fazer isso, conecte a placa via <em>USB</em> no seu computador com o botão pressionado (o botão que há na parte superior do <em>Pico</em> próximo ao conector <em>micro USB</em> deste). Ao fazer isso o <em>Pico</em> será montado no seu sistema de arquivos. No exemplo abaixo, vou copiar o projeto <em>blink</em> para o <em>Pico</em>.</p>
 <pre><code>$ cp pico-examples/build/blink.uf2 /mnt/pico</code></pre>
 <p>Após a cópia, o <em>Pico</em> será desmontado quase que imediatamente, e logo em seguida seu programa vai começar a executar. Isso vai fazer com que o pequeno <em>LED</em> na placa pisque em intervalos constantes. Parabéns, você conseguiu fazer o upload do seu primeiro programa.</p>
