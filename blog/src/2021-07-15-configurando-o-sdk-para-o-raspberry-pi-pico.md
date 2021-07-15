@@ -1,5 +1,7 @@
 # Configurando o SDK do Raspberry Pi Pico no Linux
 
+![raspberry pi pico](../images/20210715-rpi-pico.jpg)
+
 Recentemente adquiri o novo *Raspberry Pi Pico* (comprei na loja *FilipeFlop*).
 Esta placa é baseada no *microcontrolador RB2040*, projetado pela *Raspberry
 Pi* no Reino Unido. A placa é bem pequena, medindo aproximadamente 5cm x 2cm.
@@ -88,6 +90,8 @@ $ make
 $ cd ..
 ```
 ## Testando os exemplos
+
+![hello world](../images/20210715-hello-world.jpg)
 
 Para testar os exemplos, basta copiar o arquivo de extensão `.uf2` para o
 *Raspberry Pi Pico*. Para fazer isso, conecte a placa via *USB* no seu
