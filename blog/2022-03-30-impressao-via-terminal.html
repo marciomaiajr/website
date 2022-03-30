@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>marciomaiajr.xyz</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<h1 id="impressão-via-terminal-utilizando-lp-e-enscript">Impressão via
+terminal utilizando lp e enscript</h1>
+<h2
+id="configurando-a-impressora-para-imprimir-no-terminal">Configurando a
+impressora para imprimir no terminal</h2>
+<p>Assim que tiver configurado uma impressora no CUPS, verifique no
+terminal se ela está disponível com o comando abaixo:</p>
+<pre><code>lpstat -p -d</code></pre>
+<p>No meu computador a impressora configurada no CUPS aparece listada
+como HP_Smart_Tank_510_series conforme saída deste comando:</p>
+<pre><code>printer HP_Smart_Tank_510_series is idle.  enabled since Wed 30 Mar 2022 12:12:49 PM -03
+system default destination: HP_Smart_Tank_510_series</code></pre>
+<p>Após fazer isso configure a impressora escolhida como padrão para o
+lp.</p>
+<pre><code>lpoptions -d HP_Smart_Tank_510_series # substitua aqui pelo nome da sua impressora</code></pre>
+<p>Depois disso você já pode enviar trabalhos de impressão através do
+comando lp:</p>
+<pre><code>lp &lt; arquivo_para_impressao</code></pre>
+<h2
+id="utilizando-o-utilitário-enscript-para-escolher-a-fonte">Utilizando o
+utilitário enscript para escolher a fonte</h2>
+<p>Por default a fonte utilizada pelo lp pode não ser do seu agrado.
+Para resolver isso, instale o utilitário enscript e o utilize com a
+opção de fonte.</p>
+<pre><code>enscript -fCourier10 &lt; arquivo_para_impressao</code></pre>
+<p>O comando acima vai imprimir o arquivo com fonte Courier tamanho 10
+pontos.</p>
+<h2 id="resolvendo-o-problema-com-acentos">Resolvendo o problema com
+acentos</h2>
+<p>Se o seu terminal estiver configurado com o encoding UTF-8 pode ser
+que os acentos nos seus documentos não sejam impressos corretamente
+utilizando o lp e enscript.</p>
+<p>Neste caso, utilize o utilitário iconv para converter os encodings
+conforme o exemplo abaixo:</p>
+<pre><code>iconv -c -f UTF-8 -t ISO8859-1 arquivo_para_impressao | enscript -fCourier10</code></pre>
+<p>Referências</p>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/44412168/convert-utf8-to-iso8859-1-using-iconv-command">https://stackoverflow.com/questions/44412168/convert-utf8-to-iso8859-1-using-iconv-command</a></li>
+<li><a
+href="https://www.cups.org/doc/options.html">https://www.cups.org/doc/options.html</a></li>
+</ul>
+<a href="../index.html">Voltar à página inicial</a>
+</body>
+</html>
